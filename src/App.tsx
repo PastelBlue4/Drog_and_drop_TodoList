@@ -1,14 +1,25 @@
-import React from "react";
-import styled from "styled-components";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function App() {
-  const Title = styled.h1`
-    font-size: 1.5em;
-    text-align: center;
-    color: palevioletred;
-  `;
-
-  return <Title> 123 sds as</Title>;
+  const onDragEnd = () => {};
+  return (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div>
+        <Droppable droppableId="one">
+          {() => (
+            <ul>
+              <Draggable draggableId="first" index={0}>
+                {() => <li>one</li>}
+              </Draggable>
+              <Draggable draggableId="second" index={1}>
+                {() => <li>two</li>}
+              </Draggable>
+            </ul>
+          )}
+        </Droppable>
+      </div>
+    </DragDropContext>
+  );
 }
 
 export default App;
