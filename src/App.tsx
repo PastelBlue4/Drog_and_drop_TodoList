@@ -1,78 +1,68 @@
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-const Li = styled.li`
+const Wrapper = styled.div`
   display: flex;
-  font-size: 32px;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 `;
 
-const Span = styled.span`
-  width: 50px;
-  height: 50px;
-  display: flex;
+const Boards = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
 `;
+
+const Board = styled.div`
+  padding: 20px 10px;
+  padding-top: 30px;
+  background-color: ${(props) => props.theme.boardColor};
+  border-radius: 5px;
+  min-height: 200px;
+`;
+
+const Card = styled.div`
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 10px 10px;
+  background-color: ${(props) => props.theme.cardColor};
+`;
+
+const toDos = ["a", "b", "c", "d", "e", "f"];
 
 function App() {
   const onDragEnd = () => {};
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div>
-        <Droppable droppableId="one">
-          {(provided) => (
-            <ul ref={provided.innerRef} {...provided.droppableProps}>
-              <Draggable draggableId="first" index={0}>
-                {(provided) => (
-                  <Li ref={provided.innerRef} {...provided.draggableProps}>
-                    {" "}
-                    <Span {...provided.dragHandleProps}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
+      <Wrapper>
+        <Boards>
+          <Droppable droppableId="one">
+            {(magic) => (
+              <Board ref={magic.innerRef} {...magic.droppableProps}>
+                {toDos.map((toDo, index) => (
+                  <Draggable draggableId={toDo} index={index}>
+                    {(magic) => (
+                      <Card
+                        ref={magic.innerRef}
+                        {...magic.dragHandleProps}
+                        {...magic.draggableProps}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4 6h16M4 12h16M4 18h16"
-                        />
-                      </svg>
-                    </Span>
-                    one
-                  </Li>
-                )}
-              </Draggable>
-              <Draggable draggableId="second" index={1}>
-                {(provided) => (
-                  <Li ref={provided.innerRef} {...provided.draggableProps}>
-                    <Span {...provided.dragHandleProps}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4 6h16M4 12h16M4 18h16"
-                        />
-                      </svg>
-                    </Span>
-                    two
-                  </Li>
-                )}
-              </Draggable>
-            </ul>
-          )}
-        </Droppable>
-      </div>
+                        {toDo}
+                      </Card>
+                    )}
+                  </Draggable>
+                ))}
+                {magic.placeholder}
+              </Board>
+            )}
+          </Droppable>
+        </Boards>
+      </Wrapper>
     </DragDropContext>
   );
 }
-
 export default App;
